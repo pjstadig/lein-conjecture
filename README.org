@@ -1,8 +1,8 @@
 #+STARTUP: hidestars showall
-* lein-clojure-test
-  leiningen plugin for clojure-test.
+* lein-conjecture
+  leiningen plugin for conjecture.
 ** Usage
-   : $ lein clojure-test
+   : $ lein conjecture
 ** License
    : Copyright © Phil Hagelberg and Paul Stadig. All rights reserved.
    :
