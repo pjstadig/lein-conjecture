@@ -1,5 +1,5 @@
 (ns selectors
-  (:use [name.stadig.clojure.test]
+  (:use [name.stadig.conjecture]
         [clojure.java.io]))
 
 (defn record-ran [t]

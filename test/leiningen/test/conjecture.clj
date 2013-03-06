@@ -1,6 +1,6 @@
-(ns leiningen.test.clojure-test
-  (:use [name.stadig.clojure.test]
-        [leiningen.clojure-test]
+(ns leiningen.test.conjecture
+  (:use [name.stadig.conjecture]
+        [leiningen.conjecture]
         [leiningen.test.helper :only [tmp-dir sample-no-aot-project]])
   (:require [clojure.java.io :as io]))
 
@@ -21,32 +21,32 @@
   (is (every? ifn? (map eval (vals (:test-selectors sample-no-aot-project))))))
 
 (deftest test-default-selector
-    (clojure-test sample-no-aot-project ":default")
+    (conjecture sample-no-aot-project ":default")
     (is (= (ran?) #{:regular :int2 :not-custom})))
 
 (deftest test-basic-selector
-  (clojure-test sample-no-aot-project ":integration")
+  (conjecture sample-no-aot-project ":integration")
   (is (= (ran?) #{:integration :integration-ns})))
 
 (deftest test-complex-selector
-  (clojure-test sample-no-aot-project ":no-custom")
+  (conjecture sample-no-aot-project ":no-custom")
   (is (= (ran?) #{:integration :integration-ns :regular :int2})))
 
 (deftest test-two-selectors
-  (clojure-test sample-no-aot-project ":integration" ":int2")
+  (conjecture sample-no-aot-project ":integration" ":int2")
   (is (= (ran?) #{:integration :integration-ns :int2})))
 
 (deftest test-override-namespace-selector
-  (clojure-test sample-no-aot-project ":int2")
+  (conjecture sample-no-aot-project ":int2")
   (is (= (ran?) #{:integration-ns :int2})))
 
 (deftest test-only-selector
-  (clojure-test sample-no-aot-project ":only" "selectors/regular")
+  (conjecture sample-no-aot-project ":only" "selectors/regular")
   (is (= (ran?) #{:regular})))
 
 (def called? (atom false))
 
-(defmethod name.stadig.clojure.test/report :begin-test-ns [_]
+(defmethod name.stadig.conjecture/report :begin-test-ns [_]
   (reset! called? true))
 
 (deftest test-report-call-through

@@ -1,4 +1,4 @@
-(ns leiningen.clojure-test
+(ns leiningen.conjecture
   "Run the project's tests."
   (:require [clojure.java.io :as io]
             [clojure.pprint]
@@ -6,7 +6,7 @@
             [leiningen.core.eval :as eval]
             [leiningen.core.main :as main]
             [leiningen.core.project :as project]
-            [name.stadig.clojure.test])
+            [name.stadig.conjecture])
   (:import (java.io File)))
 
 (def ^:dynamic *exit-after-tests* true)
@@ -14,7 +14,7 @@
 (defn- form-for-hook-selectors [selectors]
   `(when (seq ~selectors)
      (leiningen.core.injected/add-hook
-      (resolve 'name.stadig.clojure.test/test-var)
+      (resolve 'name.stadig.conjecture/test-var)
       (fn test-var-with-selector [test-var# var#]
         (when (reduce (fn [acc# [selector# args#]]
                         (let [sfn# (if (vector? selector#)
@@ -63,19 +63,19 @@
                 selected-namespaces# ~(form-for-nses-selectors-match selectors
                                                                      ns-sym)
                 _# (leiningen.core.injected/add-hook
-                    #'name.stadig.clojure.test/report
+                    #'name.stadig.conjecture/report
                     (fn [report# m# & args#]
                       (when (#{:error :fail} (:type m#))
                         (swap! failures# conj
-                               (-> name.stadig.clojure.test/*testing-vars*
+                               (-> name.stadig.conjecture/*testing-vars*
                                    first meta :ns ns-name)))
                       (if (= :begin-test-ns (:type m#))
-                        (name.stadig.clojure.test/with-test-out
+                        (name.stadig.conjecture/with-test-out
                           (println "\nlein test" (ns-name (:ns m#)))
                           (apply report# m# args#))
                         (apply report# m# args#))))
-                summary# (binding [name.stadig.clojure.test/*test-out* *out*]
-                           (apply ~'name.stadig.clojure.test/run-tests
+                summary# (binding [name.stadig.conjecture/*test-out* *out*]
+                           (apply ~'name.stadig.conjecture/run-tests
                                   selected-namespaces#))]
             (spit ".lein-failures" (pr-str @failures#))
             (when ~*exit-after-tests*
@@ -130,7 +130,7 @@
       (main/abort "Please specify :test-selectors in project.clj"))
     [nses selectors]))
 
-(defn clojure-test
+(defn conjecture
   "Run the project's tests.
 
 Marking deftest forms with metadata allows you to pick selectors to specify
@@ -160,6 +160,6 @@ tests are run."
           [nses selectors] (read-args tests project)
           form (form-for-testing-namespaces nses nil (vec selectors))]
       (try (eval/eval-in-project project form
-                                 '(require 'name.stadig.clojure.test))
+                                 '(require 'name.stadig.conjecture))
            (catch clojure.lang.ExceptionInfo e
              (main/abort "Tests failed."))))))
