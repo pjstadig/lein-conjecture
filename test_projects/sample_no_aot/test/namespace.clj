@@ -1,5 +1,5 @@
 (ns ^:integration namespace
-  (:use [name.stadig.conjecture]
+  (:use [conjecture.core]
         [selectors :only [record-ran]]))
 
 (deftest integration-test
