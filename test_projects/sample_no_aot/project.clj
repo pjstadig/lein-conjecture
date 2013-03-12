@@ -6,7 +6,7 @@
 (defproject nomnomnom "0.5.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.3.0"]
                  [janino "2.5.15"]]
-  :profiles {:dev {:dependencies [[conjecture "0.3.0-SNAPSHOT"]]}}
+  :profiles {:dev {:dependencies [[conjecture "0.3.0"]]}}
   :uberjar-exclusions [#"DUMMY"]
   :test-selectors {:default (fn [m] (not (:integration m)))
                    :integration :integration
