@@ -9,7 +9,7 @@
 ;;;;
 ;;;; You must not remove this notice, or any other, from this software.
 (ns leiningen.test.conjecture
-  (:use [name.stadig.conjecture]
+  (:use [conjecture.core]
         [leiningen.conjecture]
         [leiningen.test.helper :only [tmp-dir sample-no-aot-project]])
   (:require [clojure.java.io :as io]))
@@ -56,7 +56,7 @@
 
 (def called? (atom false))
 
-(defmethod name.stadig.conjecture/report :begin-test-ns [_]
+(defmethod conjecture.core/report :begin-test-ns [_]
   (reset! called? true))
 
 (deftest test-report-call-through

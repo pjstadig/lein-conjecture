@@ -1,6 +1,6 @@
 (ns selectors
-  (:use [name.stadig.conjecture]
-        [clojure.java.io]))
+  (:use [clojure.java.io]
+        [conjecture.core]))
 
 (defn record-ran [t]
   (let [file-name (format "%s/lein-test-ran"
